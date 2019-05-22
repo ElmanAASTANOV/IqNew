@@ -8,8 +8,8 @@ namespace iq
         {
             /*--Input--*/
 
-            int n = 12;
-            int a = 8;
+            int n = 10;
+            int a = 3;
             int min = 2;
             int max = 4;
             int day = 30;

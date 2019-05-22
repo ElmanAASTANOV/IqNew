@@ -43,7 +43,7 @@ namespace iq
 
             for (int i = 0; i < h; i++)
             {
-                string gap1 = i < 9 ? gaps[1] : gaps[0];
+                string gap1 = i < 10 ? gaps[1] : gaps[0];
                 System.Console.Write(i + gap1);
 
                 for (int j = 0; j < w; j++)
