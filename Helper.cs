@@ -4,7 +4,7 @@ namespace iq
 {
     public static class Helper
     {
-        static bool DEbug = false;
+        public static bool DEbug = true;
         public enum DayTypes
         {
             Null = 0,
@@ -30,7 +30,7 @@ namespace iq
         }
         public static void Show(int[,] table, int h, int w, int[,] isYukuList)
         {
-            string[] gaps = { " ", "  " };
+            string[] gaps = {" ", "  "};
             System.Console.Write("   ");
             for (int i = 0; i < w; i++)
             {
@@ -45,6 +45,7 @@ namespace iq
             {
                 string gap1 = i < 10 ? gaps[1] : gaps[0];
                 System.Console.Write(i + gap1);
+                int isYuk = 0;
 
                 for (int j = 0; j < w; j++)
                 {
@@ -55,10 +56,12 @@ namespace iq
                     switch (table[i, j])
                     {
                         case (int)DayTypes.Istirahet:
+
                             System.Console.Write("*" + yuk + gap);
                             break;
 
                         case (int)DayTypes.Is:
+                            isYuk++;
                             System.Console.Write("-" + yuk + gap);
                             break;
 
@@ -74,9 +77,21 @@ namespace iq
                             break;
                     }
                 }
+                System.Console.Write("  |" + isYuk);
                 System.Console.WriteLine();
             }
 
+            System.Console.Write("   ");
+            for (int i = 0; i < w; i++)
+            {
+                int c = 0;
+                for (int j = 0; j < h; j++)
+                {
+                    if (table[j, i] == (int)DayTypes.Is) c++;
+                }
+                string gap1 = i < 8 ? gaps[0] : gaps[1];
+                System.Console.Write(c + gap1);
+            }
         }
 
         public static void FillWorkDay(int[,] table, int day, int userCount, int[,] isYukuList)
@@ -143,6 +158,7 @@ namespace iq
                 // }
                 // System.Console.WriteLine();
             }
+
 
         }
     }

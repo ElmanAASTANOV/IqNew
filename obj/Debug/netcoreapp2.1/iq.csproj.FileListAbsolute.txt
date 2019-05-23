@@ -9,3 +9,14 @@ C:\Users\elman\Desktop\iq\obj\Debug\netcoreapp2.1\iq.AssemblyInfoInputs.cache
 C:\Users\elman\Desktop\iq\obj\Debug\netcoreapp2.1\iq.AssemblyInfo.cs
 C:\Users\elman\Desktop\iq\obj\Debug\netcoreapp2.1\iq.dll
 C:\Users\elman\Desktop\iq\obj\Debug\netcoreapp2.1\iq.pdb
+C:\Users\e.astanov\Desktop\IqNew\bin\Debug\netcoreapp2.1\iq.deps.json
+C:\Users\e.astanov\Desktop\IqNew\bin\Debug\netcoreapp2.1\iq.runtimeconfig.json
+C:\Users\e.astanov\Desktop\IqNew\bin\Debug\netcoreapp2.1\iq.runtimeconfig.dev.json
+C:\Users\e.astanov\Desktop\IqNew\bin\Debug\netcoreapp2.1\iq.dll
+C:\Users\e.astanov\Desktop\IqNew\bin\Debug\netcoreapp2.1\iq.pdb
+C:\Users\e.astanov\Desktop\IqNew\obj\Debug\netcoreapp2.1\iq.csprojAssemblyReference.cache
+C:\Users\e.astanov\Desktop\IqNew\obj\Debug\netcoreapp2.1\iq.csproj.CoreCompileInputs.cache
+C:\Users\e.astanov\Desktop\IqNew\obj\Debug\netcoreapp2.1\iq.AssemblyInfoInputs.cache
+C:\Users\e.astanov\Desktop\IqNew\obj\Debug\netcoreapp2.1\iq.AssemblyInfo.cs
+C:\Users\e.astanov\Desktop\IqNew\obj\Debug\netcoreapp2.1\iq.dll
+C:\Users\e.astanov\Desktop\IqNew\obj\Debug\netcoreapp2.1\iq.pdb
