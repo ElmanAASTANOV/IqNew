@@ -94,7 +94,7 @@ namespace iq
             }
         }
 
-        public static void FillWorkDay(int[,] table, int day, int userCount, int[,] isYukuList)
+        public static void FillWorkDay(int[,] table, int day, int userCount, int[,] isYukuList, int min, int max)
         {
 
             for (int user = 0; user < userCount; user++)
@@ -106,6 +106,12 @@ namespace iq
                 }
                 else
                 {
+                    isYukuList[user, day] = 0;
+                }
+
+                if(isYukuList[user, day] == (max + 1))
+                {
+                    table[user, day] = (int)DayTypes.Istirahet;
                     isYukuList[user, day] = 0;
                 }
             }
