@@ -14,6 +14,12 @@ namespace iq
             Xeste = 4
         }
 
+        public enum Direction
+        {
+            Left = 0,
+            Right = 1
+        }
+
         public static int IseCixaBilen(int[,] table, int userCount, int day)
         {
             int count = 0;
@@ -30,7 +36,7 @@ namespace iq
         }
         public static void Show(int[,] table, int h, int w, int[,] isYukuList)
         {
-            string[] gaps = {" ", "  "};
+            string[] gaps = { " ", "  " };
             System.Console.Write("   ");
             for (int i = 0; i < w; i++)
             {
@@ -43,8 +49,8 @@ namespace iq
 
             for (int i = 0; i < h; i++)
             {
-                string gap1 = i < 10 ? gaps[1] : gaps[0];
-                System.Console.Write(i + gap1);
+                string gap1 = i <9 ? gaps[1] : gaps[0];
+                System.Console.Write((i + 1) + gap1);
                 int isYuk = 0;
 
                 for (int j = 0; j < w; j++)
@@ -109,7 +115,7 @@ namespace iq
                     isYukuList[user, day] = 0;
                 }
 
-                if(isYukuList[user, day] == (max + 1))
+                if (isYukuList[user, day] == (max + 1))
                 {
                     table[user, day] = (int)DayTypes.Istirahet;
                     isYukuList[user, day] = 0;
@@ -166,6 +172,38 @@ namespace iq
             }
 
 
+        }
+
+        public static void FillUserCounts(int[,] table, int[] workerCount, int userCount, int day)
+        {
+            for (int i = 0; i < day; i++)
+            {
+                int isYuk = 0;
+
+                for (int j = 0; j < userCount; j++)
+                {
+                    if (table[j, i] == (int)DayTypes.Is) isYuk++;
+                }
+
+                workerCount[i] = isYuk;
+            }
+
+        }
+
+        public static int CalWorkDay(int[,] table, int toDay,int user, Direction dir, int day)
+        {
+            int sum = 0;
+            int x = dir == Direction.Left ? -1 : 1;
+            toDay+=x;
+            for (int i = toDay; i>=0 && i < day; i += x)
+            {
+                if(table[user, i]==(int)DayTypes.Is)
+                sum++;
+                else
+                break;
+            }
+
+            return sum;
         }
     }
 }

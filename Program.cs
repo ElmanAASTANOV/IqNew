@@ -9,10 +9,10 @@ namespace iq
             bool Debug = false;
             /*--Input--*/
 
-            int n = 6;
-            int a = 4;
-            int min = 2;
-            int max = 6;
+            int n = 12;
+            int a = 9;
+            int min = 1;
+            int max = 7;
             int day = 30;
 
             /*-------*/
@@ -73,8 +73,11 @@ namespace iq
                 13,
                 14
             };
-
+            int[] workerCount = new int[31];
             Helper.DEbug = Debug;
+
+        //Stage 1
+            System.Console.WriteLine("Stage: 1\n");    
             for (int today = 0; today < day; today++)
             {
                 int IseCixaBilen = Helper.IseCixaBilen(table, n, today);
@@ -137,27 +140,93 @@ namespace iq
 
                 Helper.FillWorkDay(table, today, n, isYuku, min, max);
                 Helper.Sort(isYuku, IndexList, n, today, pivot);
+            }
+            Helper.Show(table, n, day, isYuku);
+            Helper.FillUserCounts(table, workerCount,n,day);
+            System.Console.WriteLine( "\n ------------------------- \n ");
 
-                // System.Console.WriteLine();
+        //Stage 2
+            System.Console.WriteLine("Stage: 2\n");
 
-                // foreach (var item in IndexList)
-                // {
-                //     System.Console.Write(item + " ");
-                // }
+            for (int i = 0; i < day; i++)
+            {
+                if(workerCount[i]==a) continue;
 
+               for (int j = 0; j < n; j++)
+               {
+                   if(table[j,i]==(int)Helper.DayTypes.Istirahet)
+                   {
+                       int l = Helper.CalWorkDay(table,i,j,Helper.Direction.Left,day);
+                       int r = Helper.CalWorkDay(table,i,j,Helper.Direction.Right,day);
+                       //System.Console.WriteLine((i +1) + " " + (1 + j));
+                       if(l + r + 1 <=max)
+                       {
+                           table[j,i] = (int)Helper.DayTypes.Is;
+                           workerCount[i]++;
+                       }
+
+                   }
+
+                   if(workerCount[i]==a) break;
+               }
+
+            }
+            Helper.Show(table, n, day, isYuku);
+            System.Console.WriteLine( "\n ------------------------- \n ");
+        
+        //Stage 3
+            System.Console.WriteLine("Stage: 3\n");
+            for(int z = 1; z <=day;z++)
+            for (int i = 1; i < day-1; i++)
+            {
+                if(workerCount[i]==a) continue;
+
+               for (int j = 0; j < n; j++)
+               {
+                   if(table[j,i] != (int)Helper.DayTypes.Istirahet) continue;
+                   if(Math.Abs(workerCount[i] - workerCount[i-1]) > Math.Abs(workerCount[i] - workerCount[i+1]))
+                   {
+                       if(Math.Abs(workerCount[i] - workerCount[i-1]) >= 2)
+                       {
+                            int r = Helper.CalWorkDay(table, i,j,Helper.Direction.Right,day);
+                            int l = Helper.CalWorkDay(table, i,j,Helper.Direction.Left,day);
+
+                            if(r<max && l >min)
+                            {
+                                table[j,i] = (int)Helper.DayTypes.Is;
+                                workerCount[i]++;
+                                table[j,i-1] = (int)Helper.DayTypes.Istirahet;
+                                workerCount[i-1]--;
+                            }
+
+                            System.Console.WriteLine((i+1) + " -- " + (j+1) + "    " +l +  " - "+ r);
+
+                       }
+                   }
+                   else
+                   {
+                        if(Math.Abs(workerCount[i] - workerCount[i+1]) >= 2)
+                       {
+                            int r = Helper.CalWorkDay(table, i,j,Helper.Direction.Right,day);
+                            int l = Helper.CalWorkDay(table, i,j,Helper.Direction.Left,day);
+
+                            if(l<max && r >min)
+                            {
+                                table[j,i] = (int)Helper.DayTypes.Is;
+                                workerCount[i]++;
+                                table[j,i+1] = (int)Helper.DayTypes.Istirahet;
+                                workerCount[i+1]--;
+                            }
+
+                            System.Console.WriteLine((i+1) + " -- " + (j+1) + "    " +l +  " - "+ r);
+
+                       }
+                   }
+               }
             }
 
             Helper.Show(table, n, day, isYuku);
-
-            // Helper.Sort(isYuku,IndexList, n,27);
-
-            // System.Console.WriteLine();
-
-            // foreach (var item in IndexList)
-            // {
-            //     System.Console.Write(item + " ");
-            // }
-
+            System.Console.WriteLine( "\n ------------------------- \n ");
         }
     }
 }
