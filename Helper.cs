@@ -40,8 +40,9 @@ namespace iq
             System.Console.Write("   ");
             for (int i = 0; i < w; i++)
             {
-                //if( i==0 )  System.Console.Write(i + "  ");
-                System.Console.Write(i + 1 + " ");
+                string p = (i + 1) % 7 == 0 ? "=" : (i + 1).ToString();
+                string gap1 = p=="=" && (i + 1) > 9 ? gaps[1] : gaps[0];
+                System.Console.Write(p + gap1);
             }
             System.Console.WriteLine();
 

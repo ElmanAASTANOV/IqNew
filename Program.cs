@@ -199,7 +199,7 @@ namespace iq
                                 workerCount[i-1]--;
                             }
 
-                            System.Console.WriteLine((i+1) + " -- " + (j+1) + "    " +l +  " - "+ r);
+                            //System.Console.WriteLine((i+1) + " -- " + (j+1) + "    " +l +  " - "+ r);
 
                        }
                    }
@@ -218,7 +218,7 @@ namespace iq
                                 workerCount[i+1]--;
                             }
 
-                            System.Console.WriteLine((i+1) + " -- " + (j+1) + "    " +l +  " - "+ r);
+                            //System.Console.WriteLine((i+1) + " -- " + (j+1) + "    " +l +  " - "+ r);
 
                        }
                    }
