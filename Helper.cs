@@ -206,5 +206,20 @@ namespace iq
 
             return sum;
         }
+
+        public static int MinValueOfBound(int[] isYuk, int left, int right, int minBound, int maxBound)
+        {
+            if(left < minBound) left = minBound;
+            if(right > maxBound) right = maxBound;
+            
+            int index;
+
+            if(isYuk[left] <= isYuk[right]) index = left;
+            else index = right;
+
+            return index;
+        }
+
+
     }
 }
