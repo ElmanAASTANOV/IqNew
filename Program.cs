@@ -7,16 +7,19 @@ namespace iq
         static void Main(string[] args)
         {
             bool Debug = false;
-            /*--Input--*/
+
+            #region Inputs--
 
             int n = 12;
             int a = 9;
             int min = 1;
-            int max = 5;
+            int max = 7;
             int day = 30;
 
-            /*-------*/
-
+            #endregion
+            
+            #region Variables init
+            
             int[,] table = new int[15, 31]{
                 {3,3,3,3,3, 3,3,3,3,3, 3,3,3,3,3, 3,3,3,3,3, 0,0,0,0,0, 0,0,0,0,0, 0},
                 {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,3,3,3,0, 0,4,0,0,0, 0},
@@ -76,7 +79,9 @@ namespace iq
             int[] workerCount = new int[31];
             Helper.DEbug = Debug;
 
-            //Stage 1
+            #endregion
+
+            #region Stage 1
             System.Console.WriteLine("Stage: 1\n");
             for (int today = 0; today < day; today++)
             {
@@ -145,8 +150,9 @@ namespace iq
             Helper.FillUserCounts(table, workerCount, n, day);
             System.Console.WriteLine("\n ------------------------- \n ");
 
+            #endregion
 
-            //Stage 2
+            #region Stage 2
             System.Console.WriteLine("Stage: 2\n");
 
             for (int i = 0; i < day; i++)
@@ -175,7 +181,9 @@ namespace iq
             Helper.Show(table, n, day, isYuku);
             System.Console.WriteLine("\n ------------------------- \n ");
 
-            //Stage 3
+            #endregion
+
+            #region Stage 3
             System.Console.WriteLine("Stage: 3\n");
             for (int z = 1; z <= day; z++)
                 for (int i = 1; i < day - 1; i++)
@@ -185,6 +193,7 @@ namespace iq
                     for (int j = 0; j < n; j++)
                     {
                         if (table[j, i] != (int)Helper.DayTypes.Istirahet) continue;
+
                         if (Math.Abs(workerCount[i] - workerCount[i - 1]) > Math.Abs(workerCount[i] - workerCount[i + 1]))
                         {
                             if (Math.Abs(workerCount[i] - workerCount[i - 1]) >= 2)
@@ -229,62 +238,74 @@ namespace iq
             Helper.Show(table, n, day, isYuku);
             System.Console.WriteLine("\n ------------------------- \n ");
 
-            //Stage 4
+            #endregion
+
+            #region Stage 4
             System.Console.WriteLine("Stage: 4\n");
 
             for (int i = 0; i < day; i++)
             {
-                if ((i + 1) % 7 == 0 && workerCount[i] < a)
+                if ((i + 1) % 7 == 0)
                 {
-                    for (int j = 0; j < n; j++)
+                    for (int l = 1; l <= 3; l++)
                     {
+                        int index = Helper.MinValueOfBound(workerCount, i - l, i + l, 0, day - 1);
 
-                        if (workerCount[i] == a) break;
-
-                        bool isShifted = false;
-
-                        if (table[j, i] == (int)Helper.DayTypes.Is)
+                        if (workerCount[index] < workerCount[i])
                         {
 
-                            for (int l = 1; l <= 3; l++)
+                            for (int j = 0; j < n; j++)
                             {
-                                int index = Helper.MinValueOfBound(workerCount, i - l, i + l, 0, day - 1);
-                            
-                                if (table[j, index]==(int)Helper.DayTypes.Is && workerCount[index] < workerCount[i])
+                                if(workerCount[index] >= a) break;
+
+                                if (table[j, index] == (int)Helper.DayTypes.Istirahet && table[j, i] == (int)Helper.DayTypes.Is)
                                 {
-                                    System.Console.WriteLine($"day :{index + 1}    j:{j + 1}");
-                                    if (index < i) // it is left 
+                                    if (index < i) //it is on left
                                     {
-                                        int rig = Helper.CalWorkDay(table, index, j, Helper.Direction.Right, day);
-                                        int left = Helper.CalWorkDay(table, index, j, Helper.Direction.Left, day);
+                                        //System.Console.WriteLine($"index: {index} Left");
 
-                                        if (rig < max && left > min)
-                                        {
-                                            table[j, i] = (int)Helper.DayTypes.Istirahet;
-                                            workerCount[i]--;
-                                            table[j, index] = (int)Helper.DayTypes.Is;
-                                            workerCount[index]++;
+                                        table[j, index] = (int)Helper.DayTypes.Is;
+                                        table[j, i] = (int)Helper.DayTypes.Istirahet;
 
-                                            isShifted = true;
-                                        }
-                                    }
-                                    else
-                                    {
                                         int rig = Helper.CalWorkDay(table, i, j, Helper.Direction.Right, day);
-                                        int left = Helper.CalWorkDay(table, i, j, Helper.Direction.Left, day);
+                                        int lef = Helper.CalWorkDay(table, i, j, Helper.Direction.Left, day);
 
-                                        if (left < max && rig > min)
+                                        if (rig >= min && lef <= max)
                                         {
-                                            table[j, i] = (int)Helper.DayTypes.Istirahet;
-                                            workerCount[i]--;
-                                            table[j, index] = (int)Helper.DayTypes.Is;
-                                            workerCount[index]++;
 
-                                            isShifted = true;
+                                            workerCount[i]--;
+                                            workerCount[index]++;
+                                        }
+                                        else
+                                        {
+                                            table[j, index] = (int)Helper.DayTypes.Istirahet;
+                                            table[j, i] = (int)Helper.DayTypes.Is;
+                                        }
+
+                                    }
+                                    else // it is on right
+                                    {
+                                        // System.Console.WriteLine($"index: {index} Right");
+
+                                        table[j, index] = (int)Helper.DayTypes.Is;
+                                        table[j, i] = (int)Helper.DayTypes.Istirahet;
+
+                                        int rig = Helper.CalWorkDay(table, i, j, Helper.Direction.Right, day);
+                                        int lef = Helper.CalWorkDay(table, i, j, Helper.Direction.Left, day);
+
+                                        if (rig <= min && lef >= max)
+                                        {
+
+                                            workerCount[i]--;
+                                            workerCount[index]++;
+                                        }
+                                        else
+                                        {
+                                            table[j, index] = (int)Helper.DayTypes.Istirahet;
+                                            table[j, i] = (int)Helper.DayTypes.Is;
                                         }
                                     }
                                 }
-                                if (isShifted) break;
                             }
                         }
 
@@ -295,6 +316,9 @@ namespace iq
 
             Helper.Show(table, n, day, isYuku);
             System.Console.WriteLine("\n ------------------------- \n ");
+
+            #endregion
+        
         }
     }
 }
