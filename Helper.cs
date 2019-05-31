@@ -10,6 +10,7 @@ namespace iq
             Null = 0,
             Is = 1,
             Istirahet = 2,
+            IstekIstirahet = -2,
             Mezuniyyet = 3,
             Xeste = 4
         }
