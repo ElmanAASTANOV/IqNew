@@ -81,6 +81,27 @@ namespace iq
 
             #endregion
 
+
+
+            System.Console.WriteLine("\nStage 1 \n ---------------------------------");
+
+            for (int today = 0; today < day; today++)
+            {
+                int aviable = Helper.IseCixaBilen(table,n,today);
+
+                if(aviable <= a)
+                {
+                    Helper.FillWorkDay(table,today,n,isYukuList, min, max);
+                    continue;
+                }
+
+                for (int j = 0; j < n; j++)
+                {
+                    
+                }
+            }
+
+
         }
     }
 }
