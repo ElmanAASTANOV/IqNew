@@ -12,8 +12,8 @@ namespace iq
 
             int n = 12;
             int a = 9;
-            int min = 2;
-            int max = 4;
+            int min = 1;
+            int max = 8;
             int day = 30;
 
             #endregion
@@ -39,6 +39,27 @@ namespace iq
                 {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0},
                 {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0}
             };
+
+            int[,] table2 = new int[15, 31]{
+                {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0},
+                {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0},
+                {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0},
+                {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0},
+                {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0},
+
+                {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0},
+                {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0},
+                {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0},
+                {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0},
+                {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0},
+
+                {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0},
+                {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0},
+                {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0},
+                {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0},
+                {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0}
+            };
+            
             int[,] isYuku = new int[15, 31]{
                 {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0},
                 {3,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0},
@@ -111,7 +132,7 @@ namespace iq
                 }
 
                 if (k) YekunEvdeQalan = (IstirahetCixan + y - 1);
-                if (Debug) System.Console.WriteLine("Day" + (today + 1) + " res:" + YekunEvdeQalan + "  x :" + x);
+                //if (Debug) System.Console.WriteLine("Day" + (today + 1) + " res:" + YekunEvdeQalan + "  x :" + x);
 
                 if (Debug)
                 {
@@ -129,10 +150,11 @@ namespace iq
                     int cursor = IndexList[j];
 
                     int h = today == day - 1 ? 0 : 1;
-                    if (table[cursor, today] == (int)Helper.DayTypes.Null &&
-                        table[cursor, today + h] == (int)Helper.DayTypes.Null &&
-                        isYuku[cursor, today] >=min
-                        )
+
+                    bool a1 = table[cursor, today] == (int)Helper.DayTypes.Null;
+                    bool a2 = table[cursor, today + h] == (int)Helper.DayTypes.Null;
+                    bool a3 = isYuku[cursor, today == 0 ? 0 : today - 1] >=min;
+                    if (a1 && a2 && a3 )
                     {
 
                         pivot = cursor;
@@ -186,7 +208,7 @@ namespace iq
 
             #region Stage 3
             System.Console.WriteLine("Stage: 3\n");
-            for (int z = 1; z <= 2; z++)
+            for (int z = 1; z <= 10; z++)
                 for (int i = 1; i < day - 1; i++)
                 {
                     if (workerCount[i] == a) continue;
@@ -210,7 +232,7 @@ namespace iq
                                 int r = Helper.CalWorkDay(table, i, j, Helper.Direction.Right, day);
                                 int l = Helper.CalWorkDay(table, i, j, Helper.Direction.Left, day);
 
-                                if ( (r < max && r > min) && (l < max &&  l > min) )
+                                if ( (r <= max && r >= min) && (l <= max &&  l >= min) )
                                 {
                                     workerCount[i]--;
                                     workerCount[i - 1]++;
@@ -237,7 +259,7 @@ namespace iq
                                 int r = Helper.CalWorkDay(table, i, j, Helper.Direction.Right, day);
                                 int l = Helper.CalWorkDay(table, i, j, Helper.Direction.Left, day);
 
-                                if ( (l < max && l > min) && (r < max && r > min) )
+                                if ( (l <= max && l >= min) && (r <= max && r >= min) )
                                 {
                                     workerCount[i]--;
                                     workerCount[i + 1]++;

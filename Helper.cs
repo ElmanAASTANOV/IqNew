@@ -109,14 +109,14 @@ namespace iq
                 if (table[user, day] == (int)DayTypes.Null)
                 {
                     table[user, day] = (int)DayTypes.Is;
-                    isYukuList[user, day] = isYukuList[user, day == 0 ? 1 : day - 1] + 1;
+                    isYukuList[user, day] = isYukuList[user, day == 0 ? 0 : day - 1] + 1;
                 }
                 else
                 {
                     isYukuList[user, day] = 0;
                 }
 
-                if (isYukuList[user, day] == (max + 1))
+                if (isYukuList[user, day] > max)
                 {
                     table[user, day] = (int)DayTypes.Istirahet;
                     isYukuList[user, day] = 0;
