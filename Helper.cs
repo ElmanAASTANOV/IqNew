@@ -13,13 +13,11 @@ namespace iq
             Mezuniyyet = 3,
             Xeste = 4
         }
-
         public enum Direction
         {
             Left = 0,
             Right = 1
         }
-
         public static int IseCixaBilen(int[,] table, int userCount, int day)
         {
             int count = 0;
@@ -41,7 +39,7 @@ namespace iq
             for (int i = 0; i < w; i++)
             {
                 string p = (i + 1) % 7 == 0 ? "=" : (i + 1).ToString();
-                string gap1 = p=="=" && (i + 1) > 9 ? gaps[1] : gaps[0];
+                string gap1 = p == "=" && (i + 1) > 9 ? gaps[1] : gaps[0];
                 System.Console.Write(p + gap1);
             }
             System.Console.WriteLine();
@@ -50,7 +48,7 @@ namespace iq
 
             for (int i = 0; i < h; i++)
             {
-                string gap1 = i <9 ? gaps[1] : gaps[0];
+                string gap1 = i < 9 ? gaps[1] : gaps[0];
                 System.Console.Write((i + 1) + gap1);
                 int isYuk = 0;
 
@@ -100,7 +98,6 @@ namespace iq
                 System.Console.Write(c + gap1);
             }
         }
-
         public static void FillWorkDay(int[,] table, int day, int userCount, int[,] isYukuList, int min, int max)
         {
 
@@ -123,7 +120,6 @@ namespace iq
                 }
             }
         }
-
         public static void Sort(int[,] isYukuList, int[] indexList, int userCount, int day, int pivot)
         {
 
@@ -174,7 +170,6 @@ namespace iq
 
 
         }
-
         public static void FillUserCounts(int[,] table, int[] workerCount, int userCount, int day)
         {
             for (int i = 0; i < day; i++)
@@ -190,36 +185,113 @@ namespace iq
             }
 
         }
-
-        public static int CalWorkDay(int[,] table, int toDay,int user, Direction dir, int day)
+        public static int CalWorkDay(int[,] table, int toDay, int user, Direction dir, int day)
         {
             int sum = 0;
             int x = dir == Direction.Left ? -1 : 1;
-            toDay+=x;
-            for (int i = toDay; i>=0 && i < day; i += x)
+            toDay += x;
+            for (int i = toDay; i >= 0 && i < day; i += x)
             {
-                if(table[user, i]==(int)DayTypes.Is)
-                sum++;
+                if (table[user, i] == (int)DayTypes.Is)
+                    sum++;
                 else
-                break;
+                    break;
             }
 
             return sum;
         }
-
         public static int MinValueOfBound(int[] isYuk, int left, int right, int minBound, int maxBound)
         {
-            if(left < minBound) left = minBound;
-            if(right > maxBound) right = maxBound;
-            
+            if (left < minBound) left = minBound;
+            if (right > maxBound) right = maxBound;
+
             int index;
 
-            if(isYuk[left] <= isYuk[right]) index = left;
+            if (isYuk[left] <= isYuk[right]) index = left;
             else index = right;
 
             return index;
         }
+        public static int[] SortWorkerCountOfDays(int[,] table, int workercount, int day)
+        {
+            int[] sortedDaysIndex = new int[day];
+            for (int k = 0; k < day; k++)
+            {
+                sortedDaysIndex[k] = k;
+            }
 
+            int calcWorkerCountforCurrentDay(int currentDay)
+            {
+                int workernumber = 0;
+                for (int y = 0; y < workercount; y++)
+                {
+                    if (table[y, currentDay] == (int)DayTypes.Is) workernumber++;
+                }
+                return workernumber;
+            }
 
+            for (int i = 0; i < day; i++)
+            {
+                bool sorted = true;
+                for (int j = 0; j < day - i - 1; j++)
+                {
+                    int side1 = calcWorkerCountforCurrentDay(sortedDaysIndex[j]);
+                    int side2 = calcWorkerCountforCurrentDay(sortedDaysIndex[j + 1]);
+                    if (side1 > side2)
+                    {
+                        int temp = sortedDaysIndex[j];
+                        sortedDaysIndex[j] = sortedDaysIndex[j + 1];
+                        sortedDaysIndex[j + 1] = temp;
+
+                        sorted = false;
+                    }
+                }
+
+                if (sorted) break;
+            }
+
+            return sortedDaysIndex;
+
+        }
+        public static int[] SortWorkerCountOfDaysOndInterval(int[,] table, int workercount, int day, int startPoint, int endPoint)
+        {
+            int[] sortedDaysIndex = new int[day];
+            for (int k = startPoint; k <= endPoint; k++)
+            {
+                sortedDaysIndex[k] = k;
+            }
+
+            int calcWorkerCountforCurrentDay(int currentDay)
+            {
+                int workernumber = 0;
+                for (int y = 0; y < workercount; y++)
+                {
+                    if (table[y, currentDay] == (int)DayTypes.Is) workernumber++;
+                }
+                return workernumber;
+            }
+
+            for (int i = startPoint; i <= endPoint; i++)
+            {
+                bool sorted = true;
+                for (int j = startPoint; j <= endPoint - 1; j++)
+                {
+                    int side1 = calcWorkerCountforCurrentDay(sortedDaysIndex[j]);
+                    int side2 = calcWorkerCountforCurrentDay(sortedDaysIndex[j + 1]);
+                    if (side1 < side2)
+                    {
+                        int temp = sortedDaysIndex[j];
+                        sortedDaysIndex[j] = sortedDaysIndex[j + 1];
+                        sortedDaysIndex[j + 1] = temp;
+
+                        sorted = false;
+                    }
+                }
+
+                if (sorted) break;
+            }
+
+            return sortedDaysIndex;
+        }
     }
 }
