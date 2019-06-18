@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace iq
 {
@@ -11,8 +12,21 @@ namespace iq
             Is = 1,
             Istirahet = 2,
             Mezuniyyet = 3,
-            Xeste = 4
+            Xeste = 4,
+            TamIsGunu = -10,
+            Novbe1 = -1,
+            Novbe2 = -2,
+            Novbe3 = -3
         }
+
+        public enum QueueTypes
+        {
+            TamIsGunu = 0,
+            Novbe1 = 1,
+            Novbe2 = 2,
+            Novbe3 = 3
+        }
+
         public enum Direction
         {
             Left = 0,
@@ -77,8 +91,25 @@ namespace iq
                         case (int)DayTypes.Mezuniyyet:
                             System.Console.Write("M" + yuk + gap);
                             break;
+
                         case (int)DayTypes.Null:
                             System.Console.Write("N" + yuk + gap);
+                            break;
+
+                        case (int)DayTypes.TamIsGunu:
+                            System.Console.Write("T" + yuk + gap);
+                            break;
+
+                        case (int)DayTypes.Novbe1:
+                            System.Console.Write("1" + yuk + gap);
+                            break;
+
+                        case (int)DayTypes.Novbe2:
+                            System.Console.Write("2" + yuk + gap);
+                            break;
+
+                        case (int)DayTypes.Novbe3:
+                            System.Console.Write("3" + yuk + gap);
                             break;
                     }
                 }
@@ -92,7 +123,12 @@ namespace iq
                 int c = 0;
                 for (int j = 0; j < h; j++)
                 {
-                    if (table[j, i] == (int)DayTypes.Is) c++;
+                    if (table[j, i] == (int)DayTypes.Is
+                    ||  table[j, i] == (int)DayTypes.TamIsGunu
+                    ||  table[j, i] == (int)DayTypes.Novbe1
+                    ||  table[j, i] == (int)DayTypes.Novbe2
+                    ||  table[j, i] == (int)DayTypes.Novbe3
+                    ) c++;
                 }
                 string gap1 = i < 8 ? gaps[0] : gaps[1];
                 System.Console.Write(c + gap1);
@@ -200,6 +236,17 @@ namespace iq
 
             return sum;
         }
+        public static int FindWorkerCountToday(int[,] table, int today)
+        {
+            int count = 0;
+
+            for (int i = 0; i < table.GetLength(0); i++)
+            {
+                if (table[i, today] == (int)DayTypes.Is) count++;
+            }
+
+            return count;
+        }
         public static int MinValueOfBound(int[] isYuk, int left, int right, int minBound, int maxBound)
         {
             if (left < minBound) left = minBound;
@@ -292,6 +339,46 @@ namespace iq
             }
 
             return sortedDaysIndex;
+        }
+        public static void FillEmploee(List<QueueWorkerModel> queuePriority, int EmpCount)
+        {
+            int i = 0;
+
+            for (int j = 0; j < queuePriority.Count; j++)
+            {
+                queuePriority[j].WorkerCount = 0;
+            }
+
+            while (EmpCount > 0)
+            {
+                if (i == queuePriority.Count) i = 0;
+
+                queuePriority[i].WorkerCount++;
+
+                EmpCount--;
+                i++;
+            }
+        }
+        public static DayTypes QueueTypesToDayTypes(QueueTypes type)
+        {
+            switch(type)
+            {
+                case QueueTypes.TamIsGunu:
+                return DayTypes.TamIsGunu;
+
+                case QueueTypes.Novbe1:
+                return DayTypes.Novbe1;
+
+                case QueueTypes.Novbe2:
+                return DayTypes.Novbe2;
+
+                case QueueTypes.Novbe3:
+                return DayTypes.Novbe3;
+
+                default:
+
+                return DayTypes.Null;
+            }
         }
     }
 }
