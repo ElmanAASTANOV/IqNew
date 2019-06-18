@@ -129,6 +129,8 @@ namespace iq
                 new QueueWorkerModel(){QueueType = Helper.QueueTypes.Novbe3}
             };
 
+            int lastDayCheck = 10;
+
             Helper.DEbug = Debug;
 
             #endregion
@@ -361,6 +363,13 @@ namespace iq
                     for (int j = 0; j < n; j++)
                     {
                         if(table[j,i] != (int)Helper.DayTypes.Is) continue;
+                        int endDay = i - lastDayCheck >= 0 ? i - lastDayCheck : 0;
+
+                        List<QueueCountModel> countModel = Helper.CalcQueueCountForWorker(table, queuePriority, i, j, endDay);
+
+                        int z = 0;
+                        //if(countModel[z].QueueType == )
+
                         if(queuePriority[k].WorkerCount <= 0 ) k++;
 
                         table[j,i] = (int)Helper.QueueTypesToDayTypes(queuePriority[k].QueueType);

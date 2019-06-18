@@ -24,7 +24,9 @@ namespace iq
             TamIsGunu = 0,
             Novbe1 = 1,
             Novbe2 = 2,
-            Novbe3 = 3
+            Novbe3 = 3,
+
+            Null = 100
         }
 
         public enum Direction
@@ -379,6 +381,84 @@ namespace iq
 
                 return DayTypes.Null;
             }
+        }
+        public static QueueTypes DayTypesToQueueTypes(DayTypes type)
+        {
+            switch (type)
+            {
+                case DayTypes.TamIsGunu:
+                    return QueueTypes.TamIsGunu;
+                case DayTypes.Novbe1:
+                    return QueueTypes.Novbe1;
+                case DayTypes.Novbe2:
+                    return QueueTypes.Novbe2;
+                case DayTypes.Novbe3:
+                    return QueueTypes.Novbe3;
+                default:
+                    return QueueTypes.Null;
+            }
+        }
+        public static DayTypes intToDayTypes(int number)
+        {
+            switch(number)
+            {
+                case 0:
+                    return DayTypes.Null;
+                case 1:
+                    return DayTypes.Is;
+                case 2:
+                    return DayTypes.Istirahet;
+                case 3:
+                    return DayTypes.Mezuniyyet;
+                case 4:
+                    return DayTypes.Xeste;
+                case -10:
+                    return DayTypes.TamIsGunu;
+                case -1:
+                    return DayTypes.Novbe1;
+                case -2:
+                    return DayTypes.Novbe2;
+                case -3:
+                    return DayTypes.Novbe3;
+                
+                default:
+                    return DayTypes.Null;
+            }
+        }
+        public static List<QueueCountModel> CalcQueueCountForWorker(int[,] table, List<QueueWorkerModel> queuePriority, int today, int user, int endDay)
+        {
+            List<QueueCountModel> queueCount = new List<QueueCountModel>();
+
+            for (int k = 0; k < queuePriority.Count; k++)
+            {
+                int sum = 0;
+                for (int i = today; i >= endDay; i--)
+                {
+                    if( DayTypesToQueueTypes( intToDayTypes(table[user, today])) == queuePriority[k].QueueType)
+                    {
+                        sum ++;
+                    }
+                }
+                queueCount.Add(new QueueCountModel(){QueueCount = sum, QueueType = queuePriority[k].QueueType});
+            }
+
+            for (int i = 0; i < queueCount.Count; i++)
+            {
+                for (int j = 0; j < queueCount.Count - i - 1; j++)
+                {
+                    if(queueCount[j].QueueCount > queueCount[j + 1].QueueCount)
+                    {
+                        QueueTypes tempType = queueCount[j].QueueType;
+                        queueCount[j].QueueType = queueCount[j + 1].QueueType;
+                        queueCount[j + 1].QueueType = tempType;
+
+                        int tempCount = queueCount[j].QueueCount;
+                        queueCount[j].QueueCount = queueCount[j + 1].QueueCount;
+                        queueCount[j + 1].QueueCount = tempCount;
+                    }
+                }
+            }
+            return queueCount;
         }
     }
 }
